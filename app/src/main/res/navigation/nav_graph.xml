@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navGraph"
+    app:startDestination="@id/contactsFragment">
+
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="ru.marina.contactlistviewermvp.ui.fragment.contacts.ContactsFragment"
+        android:label="ContactsFragment">
+        <action
+            android:id="@+id/toContactInfoFragment"
+            app:destination="@id/contactInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/contactInfoFragment"
+        android:name="ru.marina.contactlistviewermvp.ui.fragment.contacts.ContactInfoFragment"
+        android:label="ContactInfoFragment" >
+        <argument
+            android:name="contactId"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

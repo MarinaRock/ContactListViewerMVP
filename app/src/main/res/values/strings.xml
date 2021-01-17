@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">Contact List Viewer MVP</string>
+
+    <string name="search">Search</string>
+
+    <string name="error_network">Network error</string>
+    <string name="error_server">Server error</string>
+    <string name="error_unknown">Unknown error</string>
+
+</resources>
