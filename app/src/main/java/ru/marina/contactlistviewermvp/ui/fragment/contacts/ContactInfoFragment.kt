@@ -1,12 +1,11 @@
 package ru.marina.contactlistviewermvp.ui.fragment.contacts
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import moxy.presenter.InjectPresenter
@@ -26,10 +25,6 @@ import toothpick.Toothpick
 
 class ContactInfoFragment : BaseFragment<FragmentContactInfoBinding>(), ContactInfoCallback {
 
-    companion object {
-        private const val PERMISSION_CALL_PHONE = 1111
-    }
-
     private val args: ContactInfoFragmentArgs by navArgs()
 
     @InjectPresenter
@@ -41,6 +36,15 @@ class ContactInfoFragment : BaseFragment<FragmentContactInfoBinding>(), ContactI
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentContactInfoBinding =
         FragmentContactInfoBinding::inflate
+
+    private val requestPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                Intents.callPhone(requireContext(), contact.phone)
+            } else {
+                Intents.openPermissionsSetting(requireContext())
+            }
+        }
 
     lateinit var contact: Contact
 
@@ -56,18 +60,7 @@ class ContactInfoFragment : BaseFragment<FragmentContactInfoBinding>(), ContactI
         binding.toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
 
         binding.contactPhoneTextView.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(
-                    requireActivity(),
-                    Manifest.permission.CALL_PHONE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                Intents.callPhone(requireContext(), contact.phone)
-            } else {
-                requestPermissions(
-                    arrayOf(Manifest.permission.CALL_PHONE),
-                    PERMISSION_CALL_PHONE
-                )
-            }
+            requestPermission.launch(Manifest.permission.CALL_PHONE)
         }
     }
 
@@ -82,22 +75,6 @@ class ContactInfoFragment : BaseFragment<FragmentContactInfoBinding>(), ContactI
         binding.contactBiographyTextView.text = contact.biography
 
         this.contact = contact
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            PERMISSION_CALL_PHONE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Intents.callPhone(requireContext(), contact.phone)
-                } else {
-                    Intents.openPermissionsSetting(requireContext())
-                }
-            }
-        }
     }
 
     override fun onDataLoaded(contact: Contact) {
