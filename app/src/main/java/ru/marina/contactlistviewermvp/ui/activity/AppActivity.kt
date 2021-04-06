@@ -12,6 +12,8 @@ import toothpick.Toothpick
 
 class AppActivity : MvpAppCompatActivity(), MvpView {
 
+    private lateinit var binding: ActivityAppBinding
+
     @InjectPresenter
     lateinit var presenter: AppPresenter
 
@@ -19,11 +21,8 @@ class AppActivity : MvpAppCompatActivity(), MvpView {
     fun providePresenter(): AppPresenter =
         Toothpick.openScope(DI.APP_SCOPE).getInstance(AppPresenter::class.java)
 
-    lateinit var binding: ActivityAppBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Toothpick.inject(this, Toothpick.openScope(DI.APP_SCOPE))
-
         super.onCreate(savedInstanceState)
         binding = ActivityAppBinding.inflate(layoutInflater)
         setContentView(binding.root)

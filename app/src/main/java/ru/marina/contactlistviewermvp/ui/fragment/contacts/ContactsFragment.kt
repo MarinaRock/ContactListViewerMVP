@@ -43,10 +43,11 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(),
 
     private lateinit var adapter: ContactsAdapter
 
-    private var isContactsReloaded = true
     private var query = ""
+    private var isContactsReloaded = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Toothpick.inject(this, Toothpick.openScope(DI.APP_SCOPE))
         super.onCreate(savedInstanceState)
 
         adapter = ContactsAdapter()
@@ -96,15 +97,6 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(),
         adapter.submitList(contacts)
     }
 
-    override fun onRefresh() {
-        isContactsReloaded = true
-        presenter.getContacts()
-    }
-
-    override fun onItemClick(contact: Contact) {
-        findNavController().navigate(ContactsFragmentDirections.toContactInfoFragment(contact.id))
-    }
-
     override fun onDataLoaded(contacts: PagedList<Contact>) {
         binding.searchView.enable()
         initList(contacts)
@@ -121,5 +113,14 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(),
             isContactsReloaded = false
         }
         super.showProgress()
+    }
+
+    override fun onRefresh() {
+        isContactsReloaded = true
+        presenter.getContacts()
+    }
+
+    override fun onItemClick(contact: Contact) {
+        findNavController().navigate(ContactsFragmentDirections.toContactInfoFragment(contact.id))
     }
 }

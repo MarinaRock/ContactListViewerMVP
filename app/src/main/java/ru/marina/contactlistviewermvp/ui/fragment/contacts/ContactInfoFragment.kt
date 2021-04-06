@@ -27,15 +27,15 @@ class ContactInfoFragment : BaseFragment<FragmentContactInfoBinding>(), ContactI
 
     private val args: ContactInfoFragmentArgs by navArgs()
 
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentContactInfoBinding =
+        FragmentContactInfoBinding::inflate
+
     @InjectPresenter
     lateinit var presenter: ContactInfoPresenter
 
     @ProvidePresenter
     fun providePresenter(): ContactInfoPresenter =
         Toothpick.openScope(DI.APP_SCOPE).getInstance(ContactInfoPresenter::class.java)
-
-    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentContactInfoBinding =
-        FragmentContactInfoBinding::inflate
 
     private val requestPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -46,12 +46,13 @@ class ContactInfoFragment : BaseFragment<FragmentContactInfoBinding>(), ContactI
             }
         }
 
-    lateinit var contact: Contact
+    private lateinit var contact: Contact
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Toothpick.inject(this, Toothpick.openScope(DI.APP_SCOPE))
         super.onCreate(savedInstanceState)
 
-        presenter.getContactById(args.contactId)
+        presenter.getContact(args.contactId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

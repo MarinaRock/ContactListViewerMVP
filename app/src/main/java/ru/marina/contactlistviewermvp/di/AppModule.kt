@@ -26,6 +26,7 @@ fun appModule(context: Context) = module {
 
     bind(ContactsMapper::class.java).to(ContactsMapperImpl::class.java).singleton()
     bind(ContactsRemote::class.java).to(ContactsRemoteImpl::class.java).singleton()
-    bind(Prefs::class.java).to(PrefsImpl::class.java).singleton()
     bind(ContactsRepository::class.java).to(ContactsRepositoryImpl::class.java).singleton()
+
+    bind(Prefs::class.java).to(PrefsImpl::class.java).singleton()
 }

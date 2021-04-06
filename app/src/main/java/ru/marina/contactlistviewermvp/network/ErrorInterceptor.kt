@@ -17,7 +17,7 @@ class ErrorInterceptor(private val context: Context) : Interceptor {
         val response = chain.proceed(chain.request())
         val code = response.code
         if (code in 400..500) {
-            throw ServerException()
+            throw ServerException(code)
         }
         return response
     }

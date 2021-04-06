@@ -13,8 +13,8 @@ class ContactInfoPresenter @Inject constructor(
     private val contactsRepository: ContactsRepository
 ) : BasePresenter<ContactInfoCallback>() {
 
-    fun getContactById(id: String) {
-        contactsRepository.getContactById(id)
+    fun getContact(id: String) {
+        contactsRepository.getContact(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : DisposableSingleObserver<Contact>() {
                 override fun onSuccess(t: Contact) {

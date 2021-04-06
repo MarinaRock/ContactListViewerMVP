@@ -14,7 +14,7 @@ abstract class ContactsDao {
     abstract fun getContacts(): Single<List<ContactDb>>
 
     @Query("SELECT * FROM ContactDb WHERE id = :id")
-    abstract fun getContactById(id: String): Single<ContactDb>
+    abstract fun getContact(id: String): Single<ContactDb>
 
     @Query("DELETE FROM ContactDb")
     abstract fun deleteContacts()

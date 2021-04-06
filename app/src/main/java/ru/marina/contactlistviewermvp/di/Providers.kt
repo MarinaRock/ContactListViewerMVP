@@ -17,10 +17,10 @@ import javax.inject.Provider
 
 class AppDbProvider @Inject constructor(private val context: Context) : Provider<AppDb> {
 
-    override fun get(): AppDb = Room
-        .databaseBuilder(context, AppDb::class.java, "app.db")
-        .fallbackToDestructiveMigration()
-        .build()
+    override fun get(): AppDb =
+        Room.databaseBuilder(context, AppDb::class.java, "app.db")
+            .fallbackToDestructiveMigration()
+            .build()
 }
 
 class ContactsDaoProvider @Inject constructor(private val appDb: AppDb) : Provider<ContactsDao> {
@@ -30,21 +30,23 @@ class ContactsDaoProvider @Inject constructor(private val appDb: AppDb) : Provid
 
 class OkHttpProvider @Inject constructor(private val context: Context) : Provider<OkHttpClient> {
 
-    override fun get(): OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(ErrorInterceptor(context))
-        .connectTimeout(30L, TimeUnit.SECONDS)
-        .readTimeout(30L, TimeUnit.SECONDS)
-        .build()
+    override fun get(): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(ErrorInterceptor(context))
+            .connectTimeout(30L, TimeUnit.SECONDS)
+            .readTimeout(30L, TimeUnit.SECONDS)
+            .build()
 }
 
 class ApiServiceProvider @Inject constructor(private val okHttpClient: OkHttpClient) :
     Provider<ApiService> {
 
-    override fun get(): ApiService = Retrofit.Builder()
-        .baseUrl(BuildConfig.BaseUrl)
-        .client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .build()
-        .create(ApiService::class.java)
+    override fun get(): ApiService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.BaseUrl)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+            .create(ApiService::class.java)
 }

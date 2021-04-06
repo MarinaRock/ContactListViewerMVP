@@ -1,4 +1,4 @@
-package ru.marina.contactlistviewermvp
+package ru.marina.contactlistviewermvp.data
 
 object CONST {
 

@@ -23,9 +23,9 @@ abstract class BaseFragment<VB : ViewBinding> : MvpAppCompatFragment(), BaseCall
 
     abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
 
+    private var contentLayout: FrameLayout? = null
     private var progressBarContainer: FrameLayout? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
-    private var contentLayout: FrameLayout? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,8 +39,8 @@ abstract class BaseFragment<VB : ViewBinding> : MvpAppCompatFragment(), BaseCall
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        swipeRefreshLayout = (view as ViewGroup?)?.findFirstViewByClass(SwipeRefreshLayout::class)
         contentLayout = view.findViewById(R.id.contentLayout)
+        swipeRefreshLayout = (view as ViewGroup?)?.findFirstViewByClass(SwipeRefreshLayout::class)
     }
 
     override fun showProgress() {
@@ -52,8 +52,10 @@ abstract class BaseFragment<VB : ViewBinding> : MvpAppCompatFragment(), BaseCall
                 return
             }
             contentLayout?.hideChildrenViews()
+
             val progressBar = ProgressBar(context)
             progressBar.isIndeterminate = true
+
             progressBarContainer = FrameLayout(context).apply {
                 layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,

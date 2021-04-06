@@ -7,8 +7,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
-import ru.marina.contactlistviewermvp.CONST.LIST_PAGE_SIZE
+import ru.marina.contactlistviewermvp.data.CONST.LIST_PAGE_SIZE
 import ru.marina.contactlistviewermvp.data.model.Contact
 import ru.marina.contactlistviewermvp.executor.MainThreadExecutor
 import ru.marina.contactlistviewermvp.presenter.base.BasePresenter
@@ -96,7 +95,6 @@ class ContactsPresenter @Inject constructor(
             .switchMap {
                 contactsRepository.getSearchContacts(it).toObservable()
             }
-            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableObserver<List<Contact>>() {
                 override fun onNext(t: List<Contact>) {
