@@ -9,7 +9,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import io.reactivex.Observable
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import ru.marina.contactlistviewermvp.data.model.Contact
@@ -73,7 +74,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(),
             binding.searchView.findViewById(androidx.appcompat.R.id.search_src_text)
         searchViewText.isSaveEnabled = false
         binding.searchView.setQuery(query, false)
-        val observable: Observable<String> = Observable.create { emitter ->
+        val flowable: Flowable<String> = Flowable.create({ emitter ->
             binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     if (query != null) {
@@ -89,8 +90,8 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(),
                     return true
                 }
             })
-        }
-        presenter.searchContacts(observable)
+        }, BackpressureStrategy.LATEST)
+        presenter.searchContacts(flowable)
     }
 
     private fun initList(contacts: PagedList<Contact>) {

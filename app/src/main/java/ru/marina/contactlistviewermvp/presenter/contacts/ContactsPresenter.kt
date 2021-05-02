@@ -2,11 +2,10 @@ package ru.marina.contactlistviewermvp.presenter.contacts
 
 import androidx.paging.PagedList
 import androidx.paging.PositionalDataSource
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.observers.DisposableObserver
 import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.subscribers.DisposableSubscriber
 import ru.marina.contactlistviewermvp.data.CONST.LIST_PAGE_SIZE
 import ru.marina.contactlistviewermvp.data.model.Contact
 import ru.marina.contactlistviewermvp.executor.MainThreadExecutor
@@ -27,7 +26,8 @@ class ContactsPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { viewState.showProgress() }
             .doFinally { viewState.hideProgress() }
-            .subscribe(getContactsSingleObserver())
+            .subscribeWith(getContactsSingleObserver())
+            .disposeLater()
     }
 
     fun getContacts() {
@@ -35,7 +35,8 @@ class ContactsPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { viewState.showProgress() }
             .doFinally { viewState.hideProgress() }
-            .subscribe(getContactsSingleObserver())
+            .subscribeWith(getContactsSingleObserver())
+            .disposeLater()
     }
 
     private fun getContactsSingleObserver() = object : DisposableSingleObserver<List<Contact>>() {
@@ -84,8 +85,8 @@ class ContactsPresenter @Inject constructor(
             .build()
     }
 
-    fun searchContacts(observable: Observable<String>) {
-        val disposable: Disposable = observable
+    fun searchContacts(flowable: Flowable<String>) {
+        flowable
             .map {
                 viewState.showProgress()
                 return@map it
@@ -93,10 +94,10 @@ class ContactsPresenter @Inject constructor(
             .debounce(300, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
             .switchMap {
-                contactsRepository.getSearchContacts(it).toObservable()
+                contactsRepository.getSearchContacts(it).toFlowable()
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object : DisposableObserver<List<Contact>>() {
+            .subscribeWith(object : DisposableSubscriber<List<Contact>>() {
                 override fun onNext(t: List<Contact>) {
                     viewState.hideProgress()
                     viewState.onDataLoaded(getPagingContactsList(t))
@@ -110,6 +111,6 @@ class ContactsPresenter @Inject constructor(
                     viewState.onDataError(ErrorEvent(e))
                 }
             })
-        compositeDisposable.add(disposable)
+            .disposeLater()
     }
 }

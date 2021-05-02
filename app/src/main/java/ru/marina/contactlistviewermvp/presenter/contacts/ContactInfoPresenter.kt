@@ -16,7 +16,7 @@ class ContactInfoPresenter @Inject constructor(
     fun getContact(id: String) {
         contactsRepository.getContact(id)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : DisposableSingleObserver<Contact>() {
+            .subscribeWith(object : DisposableSingleObserver<Contact>() {
                 override fun onSuccess(t: Contact) {
                     viewState.onDataLoaded(t)
                 }
@@ -25,5 +25,6 @@ class ContactInfoPresenter @Inject constructor(
                     viewState.onDataError(ErrorEvent(e))
                 }
             })
+            .disposeLater()
     }
 }
