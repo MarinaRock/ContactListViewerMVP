@@ -68,7 +68,8 @@ class ContactInfoFragment : BaseFragment<FragmentContactInfoBinding>(), ContactI
     private fun initViews(contact: Contact) {
         binding.contactNameTextView.text = contact.name
         binding.contactPhoneTextView.text = contact.phone
-        binding.contactTemperamentTextView.text = contact.temperament.name.capitalize()
+        binding.contactTemperamentTextView.text =
+            contact.temperament.name.replaceFirstChar { it.uppercase() }
         val period = DateUtils.getStandardDate(contact.educationPeriod.start) +
                 " - " +
                 DateUtils.getStandardDate(contact.educationPeriod.end)

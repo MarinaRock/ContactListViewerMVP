@@ -2,19 +2,19 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navGraph"
-    app:startDestination="@id/contactsFragment">
+    app:startDestination="@id/СontactsFragment">
 
     <fragment
-        android:id="@+id/contactsFragment"
+        android:id="@+id/СontactsFragment"
         android:name="ru.marina.contactlistviewermvp.ui.fragment.contacts.ContactsFragment"
         android:label="ContactsFragment">
         <action
-            android:id="@+id/toContactInfoFragment"
-            app:destination="@id/contactInfoFragment" />
+            android:id="@+id/action_СontactsFragment_to_СontactInfoFragment"
+            app:destination="@id/СontactInfoFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/contactInfoFragment"
+        android:id="@+id/СontactInfoFragment"
         android:name="ru.marina.contactlistviewermvp.ui.fragment.contacts.ContactInfoFragment"
         android:label="ContactInfoFragment">
         <argument

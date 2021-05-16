@@ -122,6 +122,8 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(),
     }
 
     override fun onItemClick(contact: Contact) {
-        findNavController().navigate(ContactsFragmentDirections.toContactInfoFragment(contact.id))
+        findNavController().navigate(
+            ContactsFragmentDirections.actionСontactsFragmentToСontactInfoFragment(contact.id)
+        )
     }
 }

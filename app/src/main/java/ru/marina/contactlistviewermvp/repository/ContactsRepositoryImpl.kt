@@ -31,11 +31,11 @@ class ContactsRepositoryImpl @Inject constructor(
         getContactsFromCache()
             .map { contacts ->
                 contacts.filter {
-                    val queryLowerCase = query.toLowerCase().trim()
+                    val queryLowerCase = query.lowercase().trim()
                     val phone = it.phone.replace(Regex("\\D"), "")
                     val name = it.name
 
-                    name.toLowerCase().contains(queryLowerCase) ||
+                    name.lowercase().contains(queryLowerCase) ||
                             phone.contains(queryLowerCase) ||
                             it.phone.contains(queryLowerCase)
                 }

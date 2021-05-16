@@ -6,31 +6,23 @@
     android:background="@color/background"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:contentInsetEnd="0dp"
-            app:contentInsetStart="0dp">
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:background="@color/white"
+            android:focusable="false"
+            app:defaultQueryHint="@string/search"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@null" />
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="6dp"
-                android:background="@color/white"
-                android:focusable="false"
-                app:defaultQueryHint="@string/search"
-                app:iconifiedByDefault="false"
-                app:queryBackground="@null" />
-
-        </com.google.android.material.appbar.MaterialToolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
+    </FrameLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
